@@ -949,8 +949,19 @@ class SIPClient:
             self.callCallback(message)  # type: ignore
             response = self.gen_ok(message)
             self.out.sendto(response.encode("utf8"), (self.server, self.port))
+        elif message.method == "NOTIFY":
+            # Handle NOTIFY messages (e.g., message-waiting indicator, presence)
+            # Always respond with 200 OK to acknowledge receipt
+            response = self.gen_ok(message)
+            self.out.sendto(response.encode("utf8"), (self.server, self.port))
+            debug(f"Received NOTIFY: {message.headers.get('Event', 'unknown event')}")
+        elif message.method == "OPTIONS":
+            # Handle OPTIONS messages (keep-alive, capability check)
+            response = self.gen_ok(message)
+            self.out.sendto(response.encode("utf8"), (self.server, self.port))
+            debug("Received OPTIONS request")
         else:
-            debug("TODO: Add 400 Error on non processable request")
+            debug(f"TODO: Add 400 Error on non processable request: {message.method}")
 
     def start(self) -> None:
         if self.NSD:
