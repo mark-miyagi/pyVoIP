@@ -68,9 +68,9 @@ SIPClient
 
 The SIPClient class is used to communicate with the PBX/VoIP server.  It is responsible for registering with the server, and receiving phone calls.
 
-*class* SIP.\ **SIPClient**\ (server: str, port: int, username: str, password: str, myIP="0.0.0.0", myPort=5060, callCallback: Optional[Callable[[SIPMessage], None]] = None)
+*class* SIP.\ **SIPClient**\ (server: str, port: int, username: str, password: str, myIP="0.0.0.0", myPort=5060, callCallback: Optional[Callable[[SIPMessage], None]] = None, auth_username: Optional[str] = None)
     The *server* argument is your PBX/VoIP server's IP.
-    
+
     The *port* argument is your PBX/VoIP server's port.
 
     The *username* argument is your SIP account username on the PBX/VoIP server.
@@ -82,6 +82,8 @@ The SIPClient class is used to communicate with the PBX/VoIP server.  It is resp
     The *myPort* argument is the port SIPClient will bind to, to receive incoming SIP requests and responses. The default for this protocol is port 5060, but any port can be used.
 
     The *callCallback* argument is the callback function for :ref:`VoIPPhone`.  VoIPPhone will process the SIP request, and perform the appropriate actions.
+
+    The *auth_username* argument is an optional parameter for proxy authentication. When provided, this username will be used for proxy authentication (407 responses) instead of the regular username. If not provided, the regular username will be used for all authentication.
 
   **recv**\ () -> None
     This method is called by SIPClient.start() and is responsible for receiving and parsing through SIP requests.  **This should not be called by the** :term:`user`.
